@@ -18,7 +18,7 @@ func main() {
 	targetDirGlobber.InDependency().From(createTargetDatasets.Out("doneflag"))
 
 	// Balance the target datasets
-	balanceTargetDatasets := wf.NewProc("Proc2", "python3 ../balancing_targets.py {i:inpfiles} {o:balanced_targets_dir}; echo 'done' > {o:doneflag}")
+	balanceTargetDatasets := wf.NewProc("balance_dataset", "python3 ../balancing_targets.py {i:inpfiles} {o:balanced_targets_dir}; echo 'done' > {o:doneflag}")
 	balanceTargetDatasets.In("inpfiles").From(targetDirGlobber.Out())
 	balanceTargetDatasets.SetOut("balanced_targets_dir", "data/balanced_target_datasets")
 	balanceTargetDatasets.SetOut("doneflag", "{i:inpfiles|%.json}.done")
