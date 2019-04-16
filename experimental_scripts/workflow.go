@@ -10,17 +10,17 @@ func main() {
 
 	// Create target datasets
 	createTargetDatasets := wf.NewProc("create_target_datasets", "python3 ../db_targets.py ../database {o:targets_dir}; echo 'done' > {o:doneflag}")
-	createTargetDatasets.SetOut("targets_dir", "target_datasets")
+	createTargetDatasets.SetOut("targets_dir", "data/target_datasets")
 	createTargetDatasets.SetOut("doneflag", "log1")
 
 	// Glob the target dataset files into a stream
-	targetDirGlobber := spc.NewFileGlobberDependent(wf, "Targets_in_Dir", "./target_datasets/*.json")
+	targetDirGlobber := spc.NewFileGlobberDependent(wf, "glob_target_datasets", "./data/target_datasets/*.json")
 	targetDirGlobber.InDependency().From(createTargetDatasets.Out("doneflag"))
 
 	// Balance the target datasets
 	balanceTargetDatasets := wf.NewProc("Proc2", "python3 ../balancing_targets.py {i:inpfiles} {o:balanced_targets_dir}; echo 'done' > {o:doneflag}")
 	balanceTargetDatasets.In("inpfiles").From(targetDirGlobber.Out())
-	balanceTargetDatasets.SetOut("balanced_targets_dir", "balanced_target_datasets")
+	balanceTargetDatasets.SetOut("balanced_targets_dir", "data/balanced_target_datasets")
 	balanceTargetDatasets.SetOut("doneflag", "{i:inpfiles|%.json}.done")
 
 	wf.Run()
