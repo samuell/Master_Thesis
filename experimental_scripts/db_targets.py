@@ -45,7 +45,7 @@ with open(args.targetdata, 'r') as targetdata_file:
     if not os.path.isdir(args.outfolder):
         os.makedirs(args.outfolder)
     for key,value in D.items():
-        outfile_path = args.outfolder + '/' + key + '.json'
+        outfile_path = args.outfolder + '/' + key + '.tsv'
         with open(outfile_path, 'w+') as outfile:
             print('Writing things to the outfile ' + outfile_path + ' ...')
             outfile.write('SMILES' + '\t' + 'FLAG' + '\n')
