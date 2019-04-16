@@ -14,7 +14,7 @@ func main() {
 	createTargetDatasets.SetOut("doneflag", "data/target_datasets.done")
 
 	// Glob the target dataset files into a stream
-	targetDirGlobber := spc.NewFileGlobberDependent(wf, "glob_target_datasets", "./data/target_datasets/*.json")
+	targetDirGlobber := spc.NewFileGlobberDependent(wf, "glob_target_datasets", "./data/target_datasets/[^.]+.json")
 	targetDirGlobber.InDependency().From(createTargetDatasets.Out("doneflag"))
 
 	// Balance the target datasets
