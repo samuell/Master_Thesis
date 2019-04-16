@@ -42,10 +42,12 @@ with open(args.targetdata, 'r') as targetdata_file:
         elif df.iloc[j,2]=='EC50' and df.iloc[j,3]<=10000:
             D.setdefault(df.iloc[j,0],[]).append('1\n')
 
-    os.mkdir(args.outfolder)
+    if not os.path.isdir(args.outfolder):
+        os.makedirs(args.outfolder)
     for key,value in D.items():
-        with open(args.outfolder + '/' + key + '.json', 'w+') as outfile:
-            print('Writing things to the outfile ' + outfile + ' ...')
+        outfile_path = args.outfolder + '/' + key + '.json'
+        with open(outfile_path, 'w+') as outfile:
+            print('Writing things to the outfile ' + outfile_path + ' ...')
             outfile.write('SMILES' + '\t' + 'FLAG' + '\n')
             outfile.write(''.join(value))
             outfile.close()
