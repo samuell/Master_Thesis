@@ -1,7 +1,6 @@
 import argparse
 import pandas as pd
 import os
-import path
 
 #"--input", type = file, help = "input filename"
 parser = argparse.ArgumentParser(description = 'Process the Chembl database')
@@ -45,8 +44,10 @@ with open(args.targetdata, 'r') as targetdata_file:
 
     os.mkdir(args.outfolder)
     for key,value in D.items():
-        with open(path.join(args.outfolder, key + '.json'), 'w+') as f:
-            f.write('SMILES' + '\t' + 'FLAG' + '\n')
-            f.write(''.join(value))
+        with open(args.outfolder + '/' + key + '.json', 'w+') as outfile:
+            print('Writing things to the outfile ' + outfile + ' ...')
+            outfile.write('SMILES' + '\t' + 'FLAG' + '\n')
+            outfile.write(''.join(value))
+            outfile.close()
 
     #os.mkdir('only_non_binders')
