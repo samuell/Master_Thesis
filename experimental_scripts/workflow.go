@@ -11,7 +11,7 @@ func main() {
 	// Create target datasets
 	createTargetDatasets := wf.NewProc("create_target_datasets", "python3 ../db_targets.py ../database {o:targets_dir}; echo 'done' > {o:doneflag}")
 	createTargetDatasets.SetOut("targets_dir", "data/target_datasets")
-	createTargetDatasets.SetOut("doneflag", "log1")
+	createTargetDatasets.SetOut("doneflag", "data/target_datasets.done")
 
 	// Glob the target dataset files into a stream
 	targetDirGlobber := spc.NewFileGlobberDependent(wf, "glob_target_datasets", "./data/target_datasets/*.json")
