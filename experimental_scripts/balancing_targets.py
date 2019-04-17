@@ -3,11 +3,13 @@ import pandas as pd
 import glob
 import random
 import argparse
+import shutil
 
 parser = argparse.ArgumentParser(description = 'Balance files with many binders')
 parser.add_argument('--dbfile')
 parser.add_argument('--infile')
 parser.add_argument('--outfile')
+parser.add_argument('--nonbinders-dir')
 args = parser.parse_args()
 
 df_0 = pd.read_csv(args.dbfile, delimiter = '\t', lineterminator = '\n', header = 0 )
@@ -27,8 +29,10 @@ with open(args.infile, 'r') as infile:
                 one_counter += 1
         dif = one_counter - zero_counter
         if dif < 0:
+            if not os.path.isdir(args.nonbinders_dir):
+                os.makedirs(args.nonbinders_dir)
             if one_counter == 0:
-                os.rename('./' + args.infile, './only_non_binders/' + args.infile) # A big NONO!
+                shutil.copyfile(args.infile, args.nonbinders_dir + '/' + os.path.basename(args.infile))
             else:
                 nonbinders = one_counter
                 for j in range(0, df_1.shape[0]):
