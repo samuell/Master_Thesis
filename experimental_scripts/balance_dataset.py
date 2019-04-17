@@ -5,11 +5,12 @@ import random
 import argparse
 
 parser = argparse.ArgumentParser(description = 'Balance files with many binders')
-parser.add_argument('infile')
-parser.add_argument('outfile')
+parser.add_argument('--dbfile')
+parser.add_argument('--infile')
+parser.add_argument('--outfile')
 args = parser.parse_args()
 
-df_0 = pd.read_csv('database', delimiter = '\t', lineterminator = '\n', header = 0 )
+df_0 = pd.read_csv(args.dbfile, delimiter = '\t', lineterminator = '\n', header = 0 )
 
 with open(args.infile, 'r') as infile:
     with open(args.outfile, 'w+') as outfile:
